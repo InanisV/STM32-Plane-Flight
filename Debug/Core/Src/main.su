@@ -1,0 +1,10 @@
+main.c:75:5:main	16	static
+main.c:169:6:SystemClock_Config	72	static
+main.c:207:13:MX_USART1_UART_Init	8	static
+main.c:240:13:MX_GPIO_Init	40	static
+main.c:290:6:draw_all_through_struct	24	static
+main.c:295:6:all_init	8	static
+main.c:315:6:init_interface_info	16	static
+main.c:346:6:init_interface_info_second_time	16	static
+main.c:373:6:init_interface_info_new_level	16	static
+main.c:399:6:Error_Handler	4	static

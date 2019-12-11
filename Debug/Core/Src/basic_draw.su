@@ -1,0 +1,14 @@
+basic_draw.c:40:6:draw_my_plane	24	static
+basic_draw.c:48:6:draw_enemy_plane	16	static
+basic_draw.c:53:6:draw_boss	16	static
+basic_draw.c:62:6:draw_my_bullet	16	static
+basic_draw.c:81:6:draw_enemy_bullet	16	static
+basic_draw.c:93:6:draw_cross	24	static
+basic_draw.c:98:6:draw_heart	24	static
+basic_draw.c:111:6:draw_star	24	static
+basic_draw.c:118:6:draw_forward_trigon	48	static
+basic_draw.c:129:6:draw_reversed_trigon	48	static
+basic_draw.c:140:6:draw_rectangle	56	static
+basic_draw.c:160:6:draw_left_triangle	48	static
+basic_draw.c:176:6:draw_right_triangle	48	static
+basic_draw.c:192:6:draw_trapezoid	56	static

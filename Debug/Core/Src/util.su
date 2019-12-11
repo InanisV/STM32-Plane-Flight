@@ -1,0 +1,4 @@
+util.c:6:6:KEY0_or_POWER_to_skip	8	static
+util.c:14:6:arrange_my_buttles	24	static
+util.c:25:6:arrange_enemy_planes	24	static
+util.c:36:6:arrange_enemy_buttles	24	static

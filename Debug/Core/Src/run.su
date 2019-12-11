@@ -1,0 +1,8 @@
+run.c:20:5:check_overlap	32	static
+run.c:37:6:generate_enemy_planes	40	static
+run.c:73:6:switch_my_act	40	static
+run.c:100:6:update_my_buttles	40	static
+run.c:121:6:update_enemy_planes	40	static
+run.c:150:6:check_my_plane_to_enemy_plane_collide	48	static
+run.c:182:6:check_my_buttles_to_enemy_plane_collide	56	static
+run.c:224:6:clear_all_enemy_plane	32	static
