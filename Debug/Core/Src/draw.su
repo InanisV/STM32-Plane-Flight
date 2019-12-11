@@ -2,8 +2,8 @@ draw.c:6:6:draw_start_page	16	static
 draw.c:15:6:init_play_interface	16	static
 draw.c:29:6:draw_new_level	32	static
 draw.c:37:6:draw_end	32	static
-draw.c:82:6:draw_play_title	32	static
-draw.c:98:6:draw_all_my_buttles	24	static
-draw.c:109:6:draw_all_enemy_planes	24	static
-draw.c:120:6:draw_all_enemy_buttles	24	static
-draw.c:132:6:draw_play_all	24	static
+draw.c:89:6:draw_play_title	40	static
+draw.c:106:6:draw_all_my_buttles	24	static
+draw.c:117:6:draw_all_enemy_planes	24	static
+draw.c:128:6:draw_all_enemy_buttles	24	static
+draw.c:140:6:draw_play_all	24	static

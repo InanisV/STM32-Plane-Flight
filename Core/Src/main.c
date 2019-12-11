@@ -45,6 +45,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+RTC_HandleTypeDef hrtc;
+RTC_TimeTypeDef stimestructure;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
@@ -55,12 +57,13 @@ UART_HandleTypeDef huart1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
 void all_init(void);
 void init_interface_info(void);
 void init_interface_info_second_time(void);
 void init_interface_info_new_level(void);
-void draw_all_through_struct(void);
+void draw_all_through_struct(int);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -98,21 +101,30 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
+  int TIME = 60;
+  int INTERVAL = 10;
+  int current_timestamp;
   all_init();
-  draw_all_through_struct();
+  draw_all_through_struct(TIME);
   HAL_Delay(500);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint8_t x = 0;
   while (1)
   {
+	  if(interface.level == 0){
+		  HAL_RTC_GetTime(&hrtc, &stimestructure, RTC_FORMAT_BIN);
+		  interface.start_timestamp = stimestructure.Hours * 3600 + stimestructure.Minutes * 60 + stimestructure.Seconds;
+	  }
 	  while(1){
-		  if(interface.life == 0){break;}
-		  if(interface.score !=0 && interface.score % 5 == 0 && interface.level < 3 && interface.level != interface.score/5){
-			  interface.level = interface.score/5;
+		  HAL_RTC_GetTime(&hrtc, &stimestructure, RTC_FORMAT_BIN);
+		  current_timestamp = stimestructure.Hours * 3600 + stimestructure.Minutes * 60 + stimestructure.Seconds;
+		  if(interface.life == 0 || current_timestamp - interface.start_timestamp >= TIME){break;}
+		  if(interface.score !=0 && interface.score % INTERVAL == 0 && interface.level < 3 && interface.level != interface.score/INTERVAL){
+			  interface.level = interface.score/INTERVAL;
 			  //clear_all_enemy_plane(interface.my_plane,interface.enemy_planes);
 			  //interface.boss[0] = 1;
 			  break;
@@ -128,31 +140,35 @@ int main(void)
 			  check_my_buttles_to_enemy_plane_collide(&(interface.score),	interface.my_buttles, interface.enemy_planes);
 		  }
 
-		  draw_all_through_struct();
+		  draw_all_through_struct(current_timestamp - interface.start_timestamp);
 		  HAL_Delay(15);
 	  }
 
-	  if(interface.life){
+	  if(interface.life && current_timestamp - interface.start_timestamp < TIME){
 		  draw_new_level(interface.level);
 		  KEY0_or_POWER_to_skip();
 		  LCD_Clear(GRAY);
 		  init_interface_info_new_level();
+		  init_play_interface();
+
+		  draw_all_through_struct(current_timestamp - interface.start_timestamp);
 	  } else {
 		  draw_end(&(interface.score),&(interface.score_2),&(interface.score_3));
 		  KEY0_or_POWER_to_skip();
 
-		  //初始界面初始�?
+		  //初始界面初始�?????
 		  draw_start_page();
 		  KEY0_or_POWER_to_skip();
 		  LCD_Clear(GRAY);
 
-		  //游玩界面数据初始�?
+		  //游玩界面数据初始�?????
 		  init_interface_info_second_time();
-	  }
-	  //游玩界面初始�?
-	  init_play_interface();
+		  init_play_interface();
 
-	  draw_all_through_struct();
+		  draw_all_through_struct(TIME);
+	  }
+	  //游玩界面初始�?????
+
 	  HAL_Delay(500);
   }
     /* USER CODE END WHILE */
@@ -170,12 +186,14 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the CPU, AHB and APB busses clocks 
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE|RCC_OSCILLATORTYPE_LSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
@@ -197,6 +215,46 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC;
+  PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief RTC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RTC_Init(void)
+{
+
+  /* USER CODE BEGIN RTC_Init 0 */
+
+  /* USER CODE END RTC_Init 0 */
+
+  /* USER CODE BEGIN RTC_Init 1 */
+
+  /* USER CODE END RTC_Init 1 */
+  /** Initialize RTC Only 
+  */
+  hrtc.Instance = RTC;
+  hrtc.Init.AsynchPrediv = RTC_AUTO_1_SECOND;
+  hrtc.Init.OutPut = RTC_OUTPUTSOURCE_ALARM;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RTC_Init 2 */
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_SET);
+  /* USER CODE END RTC_Init 2 */
+
 }
 
 /**
@@ -242,9 +300,9 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, GPIO_PIN_SET);
@@ -287,8 +345,8 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void draw_all_through_struct(void){
-	draw_play_all(interface.score,interface.life,	interface.my_plane,interface.my_buttles,	interface.boss,	interface.enemy_planes,interface.enemy_buttles);
+void draw_all_through_struct(int limit){
+	draw_play_all(interface.score,interface.life,	interface.my_plane,interface.my_buttles,	interface.boss,	interface.enemy_planes,interface.enemy_buttles, limit);
 }
 
 
@@ -296,15 +354,15 @@ void all_init(void){
  	LCD_Init();
 	BACK_COLOR=GRAY;
 
-	POINT_COLOR=BLACK;//设置字体为黑色
+	POINT_COLOR=BLACK;//设置字体为黑�????
 	LCD_Clear(GRAY);
 
-	//初始界面初始化
+	//初始界面初始�????
 	draw_start_page();
 	KEY0_or_POWER_to_skip();
 	LCD_Clear(GRAY);
 
-	//游玩界面数据初始化
+	//游玩界面数据初始�????
 	init_interface_info();
 
 	init_play_interface();

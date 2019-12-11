@@ -7,6 +7,8 @@
 #define enemy_plane_max 10
 
 struct{
+	int start_timestamp;
+
 	int score;
 
 	int score_2;

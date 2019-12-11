@@ -37,35 +37,42 @@ void draw_new_level(int level){
 void draw_end(int *score,int *score_2, int *score_3){
 	LCD_Clear(GRAY);
 	
-	LCD_ShowString(70,40,200,24,24,"GAME OVER");
-	LCD_ShowString(87,93,200,24,24,"My SCORE:");
-	LCD_ShowxNum(100,120,*score,4,24,0);	
-	
+	LCD_ShowString(60,30,200,24,24,"Game Over");
+	LCD_ShowString(30,80,200,24,24,"My SCORE");
+	LCD_ShowxNum(130,80,*score,4,24,0);
 	if(*score_2 == 0 && *score_3 == 0){
 		*score_2 = *score;
+		LCD_ShowString(30,140,200,24,24,"Rank1");
+		LCD_ShowxNum(130,140,*score_2,4,24,0);
+		LCD_ShowString(30,200,200,24,24,"Rank2");
+		LCD_ShowString(160,200,200,24,24,"--");
 	}else if(*score_2 != 0 && *score_3 == 0){
-		*score_3 = *score_2;
-		*score_2 = *score;
-		LCD_ShowString(87,143,200,24,24,"P2 SCORE:");
-		LCD_ShowxNum(100,170,*score_2,4,24,0);	
+		if (*score > *score_2) {
+			*score_3 = *score_2;
+			*score_2 = *score;
+		} else if (*score < *score_2) {
+			*score_3 = *score;
+		}
+		LCD_ShowString(30,140,200,24,24,"Rank1");
+		LCD_ShowxNum(130,140,*score_2,4,24,0);
+		LCD_ShowString(30,200,200,24,24,"Rank2");
+		LCD_ShowxNum(130,200,*score_3,4,24,0);
 	}else if(*score_2 != 0 && *score_3 != 0){
-		LCD_ShowString(87,143,200,24,24,"P2 SCORE:");
-		LCD_ShowxNum(100,170,*score_2,4,24,0);	
-		LCD_ShowString(87,203,200,24,24,"P3 SCORE:");
-		LCD_ShowxNum(100,230,*score_3,4,24,0);	
+		if (*score > *score_2) {
+			*score_3 = *score_2;
+			*score_2 = *score;
+		} else if (*score < *score_2 && *score > *score_3) {
+			*score_3 = *score;
+		}
+		LCD_ShowString(30,140,200,24,24,"Rank1");
+		LCD_ShowxNum(130,140,*score_2,4,24,0);
+		LCD_ShowString(30,200,200,24,24,"Rank2");
+		LCD_ShowxNum(130,200,*score_3,4,24,0);
 	}
+
 	*score = 0;
 	
-	draw_my_plane(90,260);
-	draw_my_plane(120,260);
-	draw_my_plane(150,260);
-	
-	draw_star(200,300);
-	draw_star(20,130);
-	draw_star(50,230);
-	
-	draw_star(150,120);
-	draw_star(80,30);
+	LCD_ShowString(60,280,200,12,12,"Powered by 2019SUSTech");
 }
 
 
@@ -79,7 +86,7 @@ void draw_end(int *score,int *score_2, int *score_3){
 //1. 我方飞机渲染
 //2. boss渲染
 //3. cross渲染
-void draw_play_title(int score, int life){
+void draw_play_title(int score, int life, int limit){
 	int i=0;
 	int start_x = 195;
 	
@@ -90,6 +97,7 @@ void draw_play_title(int score, int life){
 	for(i=0; i<life; i++){	//生命值ֵ
 		draw_heart(start_x+i*13, 20);
 	}
+	LCD_ShowxNum(180,41,(60-limit),4,24,0);
 }
 
 //#define my_buttle_max 100
@@ -129,8 +137,8 @@ void draw_all_enemy_buttles(int enemy_buttles[300][2]){
 }
 
 //全体渲染
-void draw_play_all(int score,int life, int my_plane[2], int my_buttles[100][2], int boss[2], int enemy_planes[10][2], int enemy_buttles[300][2]){
-	draw_play_title(score,life);
+void draw_play_all(int score,int life, int my_plane[2], int my_buttles[100][2], int boss[2], int enemy_planes[10][2], int enemy_buttles[300][2], int limit){
+	draw_play_title(score,life,limit);
 	
 	draw_my_plane(my_plane[0],my_plane[1]);
 	draw_all_my_buttles(my_buttles);
