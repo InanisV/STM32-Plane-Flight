@@ -4,9 +4,7 @@ Aircraft Battle Game implemented with STM32F103RC
 ### How to use
 
 Just download .zip file and unpack it.
-
 There are two version, CubeIDE version and Keil version.
-
 Sorry for poor comments...
 
 ### UI
