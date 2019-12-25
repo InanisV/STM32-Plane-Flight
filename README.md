@@ -3,31 +3,31 @@ Aircraft Battle Game implemented with STM32F103RC
 
 ### UI
 
-<center>
-<img src="/Readme/start.jpg" style="zoom:8%; margin-right:20px;"/>
-<img src="/Readme/level1.jpg" style="zoom:8%; margin-right:20px;"/>
-<img src="/Readme/level4.jpg" style="zoom:8%; margin-right:20px;"/>
-</center>
+<img src="/Readme/start.jpg" width="200" align="left"/>
+<img src="/Readme/level1.jpg" width="200" align="left"/>
+<img src="/Readme/level4.jpg" width="200"/>
 
-<center>
-<img src="/Readme/boss.jpg" style="zoom:8%; margin-right:20px;"/>
-<img src="/Readme/score.jpg" style="zoom:8%; margin-right:20px;"/>
-</center>
-
-### 游戏演示
+<img src="/Readme/boss.jpg" width="200" align="left"/>
+<img src="/Readme/score.jpg" width="200"/>
 
 ## STM32CubeIDE Settings
+
 SYS
-![](/Readme/01.png)
+
+<img src="/Readme/01.png" width="500"/>
 
 RCC
-![](/Readme/02.png)
+
+<img src="/Readme/02.png" width="500"/>
 
 GPIO & pin
-![](/Readme/03.png)
+
+<img src="/Readme/03.png" width="500"/>
 
 RTC
-![](/Readme/04.png)
+
+<img src="/Readme/04.png" width="500"/>
 
 Clock Configuration
-![](/Readme/05.png)
+
+<img src="/Readme/05.png" width="500"/>
