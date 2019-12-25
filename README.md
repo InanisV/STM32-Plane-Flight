@@ -3,11 +3,11 @@ Aircraft Battle Game implemented with STM32F103RC
 
 ### How to use
 
-Just download .zip file (plane_fight_CubeIDE.zip/ plane_fight_keil.zip) and unpack it.
+Just download **.zip** file (plane_fight_CubeIDE.zip/ plane_fight_keil.zip) and unpack it.
 
 There are two version, CubeIDE version and Keil version.
 
-Sorry for poor comments...
+Sorry for comments...
 
 ### UI
 
